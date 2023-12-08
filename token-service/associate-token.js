@@ -7,6 +7,7 @@ const {
   TokenAssociateTransaction,
   AccountBalanceQuery,
   TokenGrantKycTransaction,
+  TokenRevokeKycTransaction
 } = require("@hashgraph/sdk");
 const myAccountId = process.env.MY_ACCOUNT_ID;
 const myPrivateKey = PrivateKey.fromString(process.env.MY_PRIVATE_KEY);
@@ -45,10 +46,23 @@ async function grantKyc(accountId, tokenId) {
   console.log("-----------------------------------");
 }
 
+async function revokeKyc(accountId, tokenId) {
+  client.setOperator(myAccountId, myPrivateKey);
+  const transaction = await new TokenRevokeKycTransaction()
+    .setAccountId(accountId)
+    .setTokenId(tokenId)
+    .execute(client);
+  const receipt = await transaction.getReceipt(client);
+
+  console.log("Revoke KYC " + receipt.status.toString());
+  console.log("-----------------------------------");
+}
+
 async function main() {
-  const tokenId = "0.0.768328";
+  const tokenId = "0.0.6741757";
   await associateToken(tokenId);
   //await grantKyc(secondAccountId, tokenId);
-  await queryAccountBalance(secondAccountId);
+  //await revokeKyc(secondAccountId, tokenId);
+  // await queryAccountBalance(secondAccountId);
 }
 main();

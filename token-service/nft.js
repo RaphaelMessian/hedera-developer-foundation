@@ -77,7 +77,17 @@ async function mintNFT(tokenId) {
   let mintRx = await mintTx.getReceipt(client);
   //Log the serial number
   console.log(`- Created NFT ${tokenId} with serial: ${mintRx.serials} \n`);
+  console.log("-----------------------------------");
+}
 
+async function burnNFT(tokenId, serial) {
+  console.log("BurnToken--------------------------");
+  const txResponse = await new TokenBurnTransaction()
+    .setTokenId(tokenId)
+    .setSerials([serial])
+    .execute(client);
+  const receipt = await txResponse.getReceipt(client);
+  console.log("Burn token: " + receipt.status.toString());
   console.log("-----------------------------------");
 }
 
@@ -86,6 +96,8 @@ async function main() {
   await queryTokenInfo(tokenId);
   await queryAccountBalance(myAccountId);
   await mintNFT(tokenId);
+  await queryAccountBalance(myAccountId);
+  await burnNFT(tokenId, 1);
   await queryAccountBalance(myAccountId);
 }
 main();

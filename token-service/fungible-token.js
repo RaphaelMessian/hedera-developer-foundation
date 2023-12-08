@@ -15,8 +15,8 @@ const {
 
 const myAccountId = process.env.MY_ACCOUNT_ID;
 const myPrivateKey = PrivateKey.fromString(process.env.MY_PRIVATE_KEY);
-const secondAccountId = process.env.SECOND_ACCOUNT_ID;
-const secondPrivateKey = PrivateKey.fromString(process.env.SECOND_PRIVATE_KEY);
+// const secondAccountId = process.env.SECOND_ACCOUNT_ID;
+// const secondPrivateKey = PrivateKey.fromString(process.env.SECOND_PRIVATE_KEY);
 
 const client = Client.forTestnet();
 client.setOperator(myAccountId, myPrivateKey);
@@ -36,7 +36,7 @@ async function createToken() {
     .setPauseKey(myPrivateKey)
     .setAdminKey(myPrivateKey)
     .setWipeKey(myPrivateKey)
-    //.setKycKey(myPrivateKey)
+    .setKycKey(myPrivateKey)
     .freezeWith(client);
 
   let tokenCreateSign = await tokenCreateTx.sign(myPrivateKey);
@@ -71,7 +71,7 @@ async function mintToken(tokenId, amount) {
     .setAmount(amount)
     .execute(client);
   const receipt = await txResponse.getReceipt(client);
-  console.log("Minted token: ", receipt);
+  console.log("Minted token: ", receipt.status.toString());
   console.log("-----------------------------------");
 }
 
@@ -82,17 +82,17 @@ async function burnToken(tokenId, amount) {
     .setAmount(amount)
     .execute(client);
   const receipt = await txResponse.getReceipt(client);
-  console.log("Minted token: ", receipt);
+  console.log("Burn token: " + receipt.status.toString());
   console.log("-----------------------------------");
 }
 
 async function main() {
   const tokenId = await createToken();
-  await queryTokenInfo(tokenId);
-  await queryAccountBalance(myAccountId);
-  await mintToken(tokenId, 1000);
-  await queryAccountBalance(myAccountId);
-  await burnToken(tokenId, 500);
-  await queryAccountBalance(myAccountId);
+  // await queryTokenInfo(tokenId);
+  // await queryAccountBalance(myAccountId);
+  //await mintToken(tokenId, 1000);
+  // await queryAccountBalance(myAccountId);
+  // await burnToken(tokenId, 500);
+  // await queryAccountBalance(myAccountId);
 }
 main();

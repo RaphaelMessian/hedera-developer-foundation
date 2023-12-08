@@ -9,6 +9,8 @@ const {
   TokenFreezeTransaction,
   TokenUnfreezeTransaction,
   TokenWipeTransaction,
+  TokenPauseTransaction,
+  TokenUnpauseTransaction
 } = require("@hashgraph/sdk");
 const myAccountId = process.env.MY_ACCOUNT_ID;
 const myPrivateKey = PrivateKey.fromString(process.env.MY_PRIVATE_KEY);
@@ -16,7 +18,7 @@ const secondAccountId = process.env.SECOND_ACCOUNT_ID;
 const secondPrivateKey = PrivateKey.fromString(process.env.SECOND_PRIVATE_KEY);
 
 const client = Client.forTestnet();
-client.setOperator(secondAccountId, secondPrivateKey);
+client.setOperator(myAccountId, myPrivateKey);
 
 async function transferToken(senderId, receiverId, tokenId, amount) {
   const sendToken = await new TransferTransaction()
@@ -66,21 +68,44 @@ async function wipeToken(accountId, tokenId, amount) {
     .execute(client);
 
   const receipt = await transaction.getReceipt(client);
-  console.log(
-    "The transaction consensus status is " + receipt.status.toString()
-  );
+  console.log("Wipe token:  " + receipt.status.toString());
+  console.log("-----------------------------------");
+}
+
+async function pauseToken(tokenId) {
+  const transaction = await new TokenPauseTransaction()
+    .setTokenId(tokenId)
+    .execute(client);
+
+  const receipt = await transaction.getReceipt(client);
+  console.log("Pause token:  " + receipt.status.toString());
+  console.log("-----------------------------------");
+}
+
+async function unpauseToken(tokenId) {
+  const transaction = await new TokenUnpauseTransaction()
+    .setTokenId(tokenId)
+    .execute(client);
+
+  const receipt = await transaction.getReceipt(client);
+  console.log("Unpause token:  " + receipt.status.toString());
+  console.log("-----------------------------------");
 }
 
 async function main() {
-  const tokenId = "0.0.5735128";
+  const tokenId = "0.0.6741746";
+  await queryAccountBalance(secondAccountId);
+  await transferToken(myAccountId, secondAccountId, tokenId, 100);
+  client.setOperator(secondAccountId, secondPrivateKey);
+  await transferToken(secondAccountId, myAccountId, tokenId, 80);
+  await queryAccountBalance(secondAccountId);
+  //client.setOperator(myAccountId, myPrivateKey);
+  //await wipeToken(secondAccountId, tokenId, 20);
   //await queryAccountBalance(secondAccountId);
-  //await transferToken(myAccountId, secondAccountId, tokenId, 1000);
-  await transferToken(secondAccountId, myAccountId, tokenId, 100000);
-  // await queryAccountBalance(secondAccountId);
-  // await wipeToken(secondAccountId, tokenId, 20);
-  // await queryAccountBalance(secondAccountId);
-  // await freezeToken(secondAccountId, tokenId);
-  //wait unfreezeToken(secondAccountId, tokenId);
-  //await transferToken(myAccountId, secondAccountId, tokenId, 100);
+  //await freezeToken(secondAccountId, tokenId);
+  //await unfreezeToken(secondAccountId, tokenId);
+  //await pauseToken(tokenId);
+  // await unpauseToken(tokenId);
+  // await transferToken(myAccountId, secondAccountId, tokenId, 100);
 }
 main();

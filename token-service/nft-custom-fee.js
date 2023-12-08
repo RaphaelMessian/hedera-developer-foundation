@@ -85,7 +85,6 @@ async function mintNFT(tokenId) {
   let mintRx = await mintTx.getReceipt(client);
   //Log the serial number
   console.log(`- Created NFT ${tokenId} with serial: ${mintRx.serials} \n`);
-
   console.log("-----------------------------------");
 }
 

@@ -4,13 +4,7 @@ require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 const {
   Client,
   TokenUpdateTransaction,
-  TokenType,
-  TokenSupplyType,
-  TokenInfoQuery,
-  AccountBalanceQuery,
   PrivateKey,
-  TokenMintTransaction,
-  TokenBurnTransaction,
 } = require("@hashgraph/sdk");
 
 const myAccountId = process.env.MY_ACCOUNT_ID;

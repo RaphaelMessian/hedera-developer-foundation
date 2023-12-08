@@ -7,16 +7,9 @@ const {
   TokenType,
   TokenSupplyType,
   TokenInfoQuery,
-  AccountBalanceQuery,
   PrivateKey,
-  TokenMintTransaction,
-  TokenBurnTransaction,
   CustomFixedFee,
-  AccountId,
-  TransferTransaction,
   Hbar,
-  TokenAssociateTransaction,
-  TokenInfo,
   TokenFeeScheduleUpdateTransaction,
 } = require("@hashgraph/sdk");
 
