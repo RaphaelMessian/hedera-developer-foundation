@@ -4,7 +4,8 @@ const {
   TransferTransaction,
   PrivateKey,
 } = require("@hashgraph/sdk");
-require("dotenv").config();
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') })
 
 async function queryBalance() {
   //Grab your Hedera testnet account ID and private key from your .env file

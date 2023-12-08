@@ -11,19 +11,15 @@ node v16
 ## Install
 
 ```bash
-git clone git@github.com:pathornteng/hash-demo.git
-cd hash-demo
+git clone https://github.com/RaphaelMessian/hedera-developer-foundation.git
+cd hedera-developer-foundation
 npm install
 ```
 
-## Run
+## Setup environment
 
 ```bash
-npm start
+cp .env.sample .env
+nano .env # edit the OPERATOR_ID and OPERATOR_KEY to match your Hedera Account and Private Key
 ```
 
-## Build
-
-```bash
-npm run build
-```
